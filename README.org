@@ -1,0 +1,17 @@
+#+TITLE: cql-mode
+
+Major Emacs mode for work with CQL (Cassandra Query Language) files.  New implementation should provide more functionality than existing one:  https://github.com/Yuki-Inoue/cql-mode
+
+* Installing
+
+TBW
+
+* Planned features
+
+** TODO Syntax highlighting
+
+** TODO Indenting
+
+** TODO cqlsh integration
+
+
