@@ -22,8 +22,16 @@
 
 (defconst cql-mode-font-lock-keywords
   (list
-   '("\\<\\(create[[:blank:]]+\\(table\\|keyspace\\)\\(?:[[:blank:]]+if[[:blank:]]+not[[:blank:]]+exists\\)?\\|drop[[:blank:]]+\\(table\\|keyspace\\)\\(?:[[:blank:]]+if[[:blank:]]+exists\\)?\\|with\\|and\\|primary[[:blank:]]key\\|with[[:blank:]]clustering[[:blank:]]order[[:blank:]]by\\|asc\\|desc\\|use\\|insert[[:blank:]]into\\|values\\|select\\|from\\|where\\|order[[:blank:]]by\\|copy\\|truncate\\(?:[[:blank:]]+table\\)?\\)\\>"
-     . font-lock-keyword-face)
+   (cons (concat "\\<\\("
+		 "create[[:blank:]]+\\(table\\|keyspace\\)\\(?:[[:blank:]]+if[[:blank:]]+not[[:blank:]]+exists\\)?"
+		 "\\|drop[[:blank:]]+\\(table\\|keyspace\\)\\(?:[[:blank:]]+if[[:blank:]]+exists\\)?"
+		 "\\|with[[:blank:]]clustering[[:blank:]]order[[:blank:]]by"
+		 "\\|insert[[:blank:]]into"
+		 "\\|order[[:blank:]]by\\|primary[[:blank:]]key"
+		 "\\|with\\|and\\|asc\\|desc\\|use\\|values\\|select\\|from\\|where\\|copy\\|frozen"
+		 "\\|truncate\\(?:[[:blank:]]+table\\)?"
+		 "\\)\\>")
+	 'font-lock-keyword-face)
    (cons (regexp-opt '("ascii" "bigint" "blob" "boolean" "counter" "decimal" "double"
 		      "float" "inet" "int" "list" "map" "set" "text" "timestamp"
 		      "uuid" "timeuuid" "varchar" "varint") 'words)
