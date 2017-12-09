@@ -25,10 +25,12 @@
    (cons (concat "\\<\\("
 		 "create[[:blank:]]+\\(table\\|keyspace\\)\\(?:[[:blank:]]+if[[:blank:]]+not[[:blank:]]+exists\\)?"
 		 "\\|drop[[:blank:]]+\\(table\\|keyspace\\)\\(?:[[:blank:]]+if[[:blank:]]+exists\\)?"
+		 "\\|alter[[:blank:]]+table"
+		 "\\|\\(?:create\\|drop\\)[[:blank:]]+type"
 		 "\\|with[[:blank:]]clustering[[:blank:]]order[[:blank:]]by"
 		 "\\|insert[[:blank:]]into"
 		 "\\|order[[:blank:]]by\\|primary[[:blank:]]key"
-		 "\\|with\\|and\\|asc\\|desc\\|use\\|values\\|select\\|from\\|where\\|copy\\|frozen"
+		 "\\|with\\|and\\|asc\\|desc\\|use\\|values\\|select\\|from\\|where\\|copy\\|frozen\\|source\\|add"
 		 "\\|truncate\\(?:[[:blank:]]+table\\)?"
 		 "\\)\\>")
 	 'font-lock-keyword-face)
@@ -36,6 +38,8 @@
 		      "float" "inet" "int" "list" "map" "set" "text" "timestamp"
 		      "uuid" "timeuuid" "varchar" "varint") 'words)
 	 'font-lock-type-face)
+   (cons (regexp-opt '("true" "false") 'words)
+	 'font-lock-constant-face)
    (list (concat "\\<\\(?:create[[:blank:]]+\\(?:table\\|keyspace\\)\\(?:[[:blank:]]+if[[:blank:]]+not[[:blank:]]+exists\\)?"
 		 "\\|drop[[:blank:]]+\\(?:table\\|keyspace\\)\\(?:[[:blank:]]+if[[:blank:]]+exists\\)?"
 		 "\\|alter[[:blank:]]+\\(?:table\\|keyspace\\)"
