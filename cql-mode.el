@@ -20,28 +20,31 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+;; TODO: rewrite to "multi-component" regexes
 (defconst cql-mode-font-lock-keywords
   (list
    (cons (concat "\\<\\("
-		 "create[[:blank:]]+\\(table\\|keyspace\\)\\(?:[[:blank:]]+if[[:blank:]]+not[[:blank:]]+exists\\)?"
-		 "\\|drop[[:blank:]]+\\(table\\|keyspace\\)\\(?:[[:blank:]]+if[[:blank:]]+exists\\)?"
+		 "create[[:blank:]]+\\(table\\|keyspace\\|type\\|materialized[[:blank:]]+view\\)\\(?:[[:blank:]]+if[[:blank:]]+not[[:blank:]]+exists\\)?"
+		 "\\|drop[[:blank:]]+\\(table\\|keyspace\\|type\\|materialized[[:blank:]]+view\\)\\(?:[[:blank:]]+if[[:blank:]]+exists\\)?"
 		 "\\|alter[[:blank:]]+table"
 		 "\\|\\(?:create\\|drop\\)[[:blank:]]+type"
-		 "\\|with[[:blank:]]clustering[[:blank:]]order[[:blank:]]by"
-		 "\\|insert[[:blank:]]into"
+		 "\\|with[[:blank:]]+clustering[[:blank:]]+order[[:blank:]]+by"
+		 "\\|insert[[:blank:]]+into"
+		 "\\|is\\(?:[[:blank:]]+not\\)?"
 		 "\\|order[[:blank:]]by\\|primary[[:blank:]]key"
-		 "\\|with\\|and\\|asc\\|desc\\|use\\|values\\|select\\|from\\|where\\|copy\\|frozen\\|source\\|add"
+		 "\\|with\\|and\\|asc\\|desc\\|use\\|values\\|select\\|from\\|where\\|copy\\|frozen"
+		 "\\|source\\|add\\|json\\|compaction\\|compression\\|as"
 		 "\\|truncate\\(?:[[:blank:]]+table\\)?"
 		 "\\)\\>")
 	 'font-lock-keyword-face)
    (cons (regexp-opt '("ascii" "bigint" "blob" "boolean" "counter" "decimal" "double"
 		      "float" "inet" "int" "list" "map" "set" "text" "timestamp"
-		      "uuid" "timeuuid" "varchar" "varint") 'words)
+		      "uuid" "timeuuid" "varchar" "varint" "tuple") 'words)
 	 'font-lock-type-face)
-   (cons (regexp-opt '("true" "false") 'words)
+   (cons (regexp-opt '("true" "false" "null") 'words)
 	 'font-lock-constant-face)
-   (list (concat "\\<\\(?:create[[:blank:]]+\\(?:table\\|keyspace\\)\\(?:[[:blank:]]+if[[:blank:]]+not[[:blank:]]+exists\\)?"
-		 "\\|drop[[:blank:]]+\\(?:table\\|keyspace\\)\\(?:[[:blank:]]+if[[:blank:]]+exists\\)?"
+   (list (concat "\\<\\(?:create[[:blank:]]+\\(?:table\\|keyspace\\|type\\|materialized[[:blank:]]+view\\)\\(?:[[:blank:]]+if[[:blank:]]+not[[:blank:]]+exists\\)?"
+		 "\\|drop[[:blank:]]+\\(?:table\\|keyspace\\|type\\|materialized[[:blank:]]+view\\)\\(?:[[:blank:]]+if[[:blank:]]+exists\\)?"
 		 "\\|alter[[:blank:]]+\\(?:table\\|keyspace\\)"
 		 "\\|truncate\\(?:[[:blank:]]+table\\)?"
 		 "\\|copy"
@@ -50,6 +53,19 @@
 		 "\\(\\w+\\(?:\\s-*[.]\\s-*\\w+\\)*\\)"
 		 "\\>")
 	 1 'font-lock-function-name-face)
+   ;; TODO: allow to repeat select/modify/execute
+   ;; TODO: rework to match syntax - see final discussion on https://datastax.jira.com/browse/DB-757
+   ;; GRANT [ ( WITH | ONLY ) GRANT OPTION FOR ] <permission> ON <resource> TO <grantee>;
+   ;; REVOKE [ ( WITH | ONLY ) GRANT OPTION FOR ] <permission> ON <resource> FROM <grantee>;
+   '("\\<\\(\\(?:grant\\|revoke\\|restrict\\|unrestrict\\)[[:blank:]]+\\(?:select\\|modify\\|execute\\)\\)[[:blank:]]+\\>"
+     (1 font-lock-keyword-face)
+     (2 font-lock-function-name-face)
+     (3 font-lock-keyword-face)
+     (4 font-lock-function-name-face))
+   '("\\<\\(\\(?:create\\|drop\\)[[:blank:]]+role\\)[[:blank:]]+\\(\\w+\\)"
+     (1 font-lock-keyword-face)
+     (2 font-lock-function-name-face))
+   ;; TODO: add standard functions
    )
   "Highlighting definition for CQL mode")
 

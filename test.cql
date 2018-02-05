@@ -42,3 +42,19 @@ primary key ((title, added_year))
 COPY videos_by_title_year (title, added_year, added_date, description, user_id, video_id)
 FROM '/root/labwork/exercise-3/videos_by_title_year.csv'
 WITH HEADER = true;
+
+INSERT INTO videos_by_title_year JSON '{"title":"test","added_year":2015}';
+
+INSERT INTO videos_by_title_year (title, added_year) VALUES ('test', 2015);
+
+
+GRANT SELECT, MODIFY, EXECUTE ON myks TO some_role;
+
+CREATE ROLE security_admin;
+drop ROLE security_admin;
+GRANT security_admin TO admin_guy;
+
+GRANT AUTHORIZE FOR SELECT, MODIFY, EXECUTE ON patientdata TO security_admin;
+
+
+RESTRICT SELECT, MODIFY, EXECUTE ON KEYSPACE patientdata TO security_admin;
